@@ -1,7 +1,5 @@
 const asyncHandler = require("express-async-handler");
 const Song = require("../models/songModel");
-const User = require("../models/userModel");
-const Playlist = require("../models/playlistModel");
 
 const addSong = asyncHandler(async (req, res) => {
   try {
