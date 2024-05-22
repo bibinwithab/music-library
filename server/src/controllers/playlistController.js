@@ -1,7 +1,8 @@
+const asyncHandler = require("express-async-handler");
 const Playlist = require("../models/playlistModel");
 const User = require("../models/userModel");
 
-const createPlaylist = async (req, res) => {
+const createPlaylist = asyncHandler(async (req, res) => {
   try {
     const { playlistName } = req.body;
     const playlist = new Playlist({
@@ -15,9 +16,9 @@ const createPlaylist = async (req, res) => {
       .status(500)
       .json({ message: "internal server error", error: `${error}` });
   }
-};
+});
 
-const addToPlaylist = async (req, res) => {
+const addToPlaylist = asyncHandler(async (req, res) => {
   try {
     const { playlistId, songId } = req.body;
     const playlist = await Playlist.findById(playlistId);
@@ -32,9 +33,9 @@ const addToPlaylist = async (req, res) => {
       .status(500)
       .json({ message: "internal server error", error: `${error}` });
   }
-};
+});
 
-const removeFromPlaylist = async (req, res) => {
+const removeFromPlaylist = asyncHandler(async (req, res) => {
   try {
     const { playlistId, songId } = req.body;
     const playlist = await Playlist.findById(playlistId);
@@ -51,7 +52,7 @@ const removeFromPlaylist = async (req, res) => {
       .status(500)
       .json({ message: "internal server error", error: `${error}` });
   }
-};
+});
 
 module.exports = {
   createPlaylist,
