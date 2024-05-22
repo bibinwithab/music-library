@@ -7,7 +7,7 @@ router
   .put("/update/:id", songController.updateSong)
   .get("/all", songController.getAllSongs)
   .get("/one/:id", songController.getOneSong)
-  .post("/organize", songController.organizeSongs)
+  .get("/sort", songController.sortSongs)
   .get("/search", songController.searchSong);
 
 module.exports = router;
