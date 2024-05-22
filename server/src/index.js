@@ -22,4 +22,5 @@ app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log(`Server up on http://localhost:${PORT}/`);
+  dbConfig();
 });
