@@ -54,6 +54,7 @@ const updateSong = asyncHandler(async (req, res) => {
   }
 });
 
+// @ GET /api/songs/all
 const getAllSongs = asyncHandler(async (req, res) => {
   try {
     const songs = await Song.find();
