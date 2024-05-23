@@ -11,7 +11,6 @@ const Song = require("../models/songModel");
  *  "releaseDate": "2020"
  * }
  */
-
 const addSong = asyncHandler(async (req, res) => {
   try {
     const { title, artist, genre, releaseDate } = req.body;
@@ -30,11 +29,14 @@ const addSong = asyncHandler(async (req, res) => {
   }
 });
 
+/**
+ * @ DELETE /api/songs/delete/:id
+ */
 const deleteSong = asyncHandler(async (req, res) => {
   try {
     const { id } = req.params;
     await Song.findByIdAndDelete(id);
-    res.json({ message: "Song deleted" });
+    res.status(201).json({ message: "Song deleted" });
   } catch (error) {
     res
       .status(500)
@@ -42,12 +44,20 @@ const deleteSong = asyncHandler(async (req, res) => {
   }
 });
 
+/**
+ * @ PUT /api/songs/update/:id
+ *
+ * @ sample body
+ * {
+ *  "genre": "Rap"
+ * }
+ */
 const updateSong = asyncHandler(async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, artist, genre } = req.body;
-    await Song.findByIdAndUpdate(id, { title, artist, genre });
-    res.json({ message: "Song updated" });
+    const { title, artist, genre, releaseDate } = req.body;
+    await Song.findByIdAndUpdate(id, { title, artist, genre, releaseDate });
+    res.status(201).json({ message: "Song updated" });
   } catch (error) {
     res
       .status(500)
@@ -61,7 +71,7 @@ const updateSong = asyncHandler(async (req, res) => {
 const getAllSongs = asyncHandler(async (req, res) => {
   try {
     const songs = await Song.find();
-    res.json(songs);
+    res.status(200).json(songs);
   } catch (error) {
     res
       .status(500)
@@ -69,10 +79,17 @@ const getAllSongs = asyncHandler(async (req, res) => {
   }
 });
 
+/**
+ * @ GET /api/songs?sort=releaseDate
+ */
 const sortSongs = asyncHandler(async (req, res) => {
+  const { sort } = req.query;
+  let sortBy = {};
+  if (sort) sortBy[sort] = 1;
+
   try {
-    const songs = await Song.find().sort({ title: 1 });
-    res.json(songs);
+    const songs = await Song.find().sort(sortBy);
+    res.status(200).json(songs);
   } catch (error) {
     res
       .status(500)
@@ -80,11 +97,20 @@ const sortSongs = asyncHandler(async (req, res) => {
   }
 });
 
+/**
+ * @ GET /api/songs/search?artist=dua%20lipa
+ */
 const searchSong = asyncHandler(async (req, res) => {
+  const { title, artist, genre, album } = req.query;
+  let query = {};
+  if (title) query.title = { $regex: title, $options: "i" };
+  if (artist) query.artist = { $regex: artist, $options: "i" };
+  if (genre) query.genre = genre;
+  if (album) query.album = { $regex: album, $options: "i" };
+
   try {
-    const { title } = req.query;
-    const songs = await Song.find({ title });
-    res.json(songs);
+    const songs = await Song.find(query);
+    res.status(200).json(songs);
   } catch (error) {
     res
       .status(500)
