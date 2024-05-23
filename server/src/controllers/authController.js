@@ -4,6 +4,15 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../models/userModel");
 
+/**
+ * @ POST api/auth/register
+ * @ sample  body
+ * {
+ *  "username": "John",
+ *  "password": "password",
+ *  "email": "john@gmail.com"
+ * }
+ */
 const registerUser = asyncHandler(async (req, res) => {
   try {
     const { username, password, email } = req.body;
@@ -33,6 +42,15 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 });
 
+/**
+ * @ POST /api/auth/login
+ *
+ * @ sample body
+ * {
+ *  "username": "John",
+ *  "password": "password,"
+ * }
+ */
 const loginUser = asyncHandler(async (req, res) => {
   try {
     const { username, password } = req.body;
@@ -70,6 +88,9 @@ const loginUser = asyncHandler(async (req, res) => {
   }
 });
 
+/**
+ * @ GET /api/auth/logout/
+ */
 const logoutUser = asyncHandler(async (req, res) => {
   res.clearCookie("accessToken", { sameSite: "none", secure: true });
   res.json({ message: "logged out successfully" });

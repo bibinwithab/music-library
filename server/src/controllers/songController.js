@@ -1,16 +1,17 @@
 const asyncHandler = require("express-async-handler");
 const Song = require("../models/songModel");
 
+/**
+ * @ POST /api/songs/addsong
+ * @ sample body
+ * {
+ *  "title": "levitating",
+ *  "artist": "Dua Lipa",
+ *  "genre": "Pop",
+ *  "releaseDate": "2020"
+ * }
+ */
 
-/*@ POST /api/songs/addsong
-@ sample body
-{
-    "title": "Levitating",
-    "artist": "Dua Lipa",
-    "genre": "Pop",
-    "releaseDate": "2020"
-}
-*/
 const addSong = asyncHandler(async (req, res) => {
   try {
     const { title, artist, genre, releaseDate } = req.body;
@@ -54,7 +55,9 @@ const updateSong = asyncHandler(async (req, res) => {
   }
 });
 
-// @ GET /api/songs/all
+/**
+ * @ GET /api/songs/all/
+ * */
 const getAllSongs = asyncHandler(async (req, res) => {
   try {
     const songs = await Song.find();
