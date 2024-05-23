@@ -1,13 +1,24 @@
 const asyncHandler = require("express-async-handler");
 const Song = require("../models/songModel");
 
+
+/*@ POST /api/songs/addsong
+@ sample body
+{
+    "title": "Levitating",
+    "artist": "Dua Lipa",
+    "genre": "Pop",
+    "releaseDate": "2020"
+}
+*/
 const addSong = asyncHandler(async (req, res) => {
   try {
-    const { title, artist, genre } = req.body;
+    const { title, artist, genre, releaseDate } = req.body;
     const song = new Song({
       title,
       artist,
       genre,
+      releaseDate,
     });
     await song.save();
     res.status(201).json({ message: "Song added" });
