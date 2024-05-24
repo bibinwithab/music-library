@@ -13,7 +13,9 @@ const Song = require("../models/songModel");
 const createPlaylist = asyncHandler(async (req, res) => {
   try {
     const { playlistName } = req.body;
-    const existingPlaylist = await Playlist.findOne({ playlistName: playlist });
+    const existingPlaylist = await Playlist.findOne({
+      playlistName: { $regex: playlistName, $options: "i" },
+    });
     if (existingPlaylist) {
       res
         .status(400)
