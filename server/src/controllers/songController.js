@@ -110,6 +110,9 @@ const searchSong = asyncHandler(async (req, res) => {
 
   try {
     const songs = await Song.find(query);
+    if (songs.length === 0) {
+      return res.status(404).json({ message: "Song not found" });
+    }
     res.status(200).json(songs);
   } catch (error) {
     res
