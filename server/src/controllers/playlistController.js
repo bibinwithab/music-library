@@ -61,7 +61,7 @@ const addToPlaylist = asyncHandler(async (req, res) => {
     }
     playlist.songs.push({ songId: song._id });
     await playlist.save();
-    res.status(200).json({ message: "Song added to playlist" });
+    res.status(201).json({ message: "Song added to playlist" });
   } catch (error) {
     res
       .status(500)
@@ -97,7 +97,7 @@ const removeFromPlaylist = asyncHandler(async (req, res) => {
       (songItem) => songItem.songId.toString() !== song._id.toString()
     );
     await playlist.save();
-    res.json({ message: "Song removed from playlist" });
+    res.status(201).json({ message: "Song removed from playlist" });
   } catch (error) {
     res
       .status(500)
@@ -114,7 +114,7 @@ const getAllPlaylists = asyncHandler(async (req, res) => {
     if (playlists.length == 0) {
       return res.status(404).json({ message: "No playlists found" });
     }
-    res.json(playlists);
+    res.status(200).json(playlists);
   } catch (error) {
     res.status(500).json({
       message: "internal server error",

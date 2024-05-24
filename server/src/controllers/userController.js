@@ -8,7 +8,7 @@ const getUser = asyncHandler(async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    res.json(user);
+    res.status(200).json(user);
   } catch (error) {
     res
       .status(500)
@@ -22,7 +22,7 @@ const updateUser = asyncHandler(async (req, res) => {
     user.username = req.body.username || user.username;
     user.email = req.body.email || user.email;
     user.save();
-    res.json({ message: "User updated" });
+    res.status(200).json({ message: "User updated" });
   } catch (error) {
     res
       .status(500)
@@ -34,7 +34,7 @@ const deleteUser = asyncHandler(async (req, res) => {
   try {
     await Playlist.deleteMany({ userId: req.user.id });
     await User.findByIdAndDelete(req.user.id);
-    res.json({ message: "User and associated playlists deleted" });
+    res.status(200).json({ message: "User and associated playlists deleted" });
   } catch (error) {
     res
       .status(500)
