@@ -31,7 +31,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
     newUser.save();
 
-    res.json({
+    res.status(200).json({
       message: "New user Created",
     });
   } catch (error) {
@@ -70,6 +70,7 @@ const loginUser = asyncHandler(async (req, res) => {
     });
 
     res
+    .status(200)
       .cookie("accessToken", token, {
         httpOnly: true,
       })
@@ -93,7 +94,7 @@ const loginUser = asyncHandler(async (req, res) => {
  */
 const logoutUser = asyncHandler(async (req, res) => {
   res.clearCookie("accessToken", { sameSite: "none", secure: true });
-  res.json({ message: "logged out successfully" });
+  res.status(200).json({ message: "logged out successfully" });
 });
 
 module.exports = {

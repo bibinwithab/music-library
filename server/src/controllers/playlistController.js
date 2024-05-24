@@ -95,7 +95,7 @@ const removeFromPlaylist = asyncHandler(async (req, res) => {
       (songItem) => songItem.songId.toString() !== song._id.toString()
     );
     await playlist.save();
-    res.json({ message: "Song removed from playlist" });
+    res.status(200).json({ message: "Song removed from playlist" });
   } catch (error) {
     res
       .status(500)
@@ -112,7 +112,7 @@ const getAllPlaylists = asyncHandler(async (req, res) => {
     if (playlists.length == 0) {
       return res.status(404).json({ message: "No playlists found" });
     }
-    res.json(playlists);
+    res.status(201).json(playlists);
   } catch (error) {
     res.status(500).json({
       message: "internal server error",
