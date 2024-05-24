@@ -3,18 +3,18 @@ import axiosInstance from "../utils/axiosInstance";
 export const registerUser = async(userData)=>{
     try{
         const response = await axiosInstance.post("api/auth/register",userData);
-        return response;
+        return response.data;
     }catch(error){
-        return error.response;
+        return error.response.data;
     }
 }
 
 export const loginUser = async(userData)=>{
     try{
         const response = await axiosInstance.post("api/auth/login",userData);
-        return response;
+        return response.data;
     }catch(error){
-        return error.response;
+        throw error.response.data;
     }
 }
 
