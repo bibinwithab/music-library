@@ -11,6 +11,7 @@ const playlistSchema = new Schema(
     playlistName: {
       type: String,
       required: true,
+      unique: true,
     },
     creationDate: {
       type: Date,

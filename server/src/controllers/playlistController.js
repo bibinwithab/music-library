@@ -46,13 +46,13 @@ const addToPlaylist = asyncHandler(async (req, res) => {
     const { playlistName, songName } = req.body;
 
     const playlist = await Playlist.findOne({
-      playlistName: { $regex: new RegExp(playlistName, "i") },
+      playlistName: { $regex: playlistName, $options: "i" },
     });
     if (!playlist) {
       return res.status(404).json({ message: "Playlist not found" });
     }
     const song = await Song.findOne({
-      title: { $regex: new RegExp(songName, "i") },
+      title: { $regex: songName, $options: "i" },
     });
     if (!song) {
       return res.status(404).json({ message: "Song not found" });
@@ -67,15 +67,26 @@ const addToPlaylist = asyncHandler(async (req, res) => {
   }
 });
 
+/**
+ * @ DELETE /api/playlists/removeSong
+ *
+ * @ sample body
+ * {
+ *  "playlistName": "good vibes",
+ *  "songName": "levitating",
+ * }
+ */
 const removeFromPlaylist = asyncHandler(async (req, res) => {
   try {
-    const { playlistId, songName } = req.body;
-    const playlist = await Playlist.findById(playlistId);
+    const { playlistName, songName } = req.body;
+    const playlist = await Playlist.findOne({
+      playlistName: { $regex: playlistName, $options: "i" },
+    });
     if (!playlist) {
       return res.status(404).json({ message: "Playlist not found" });
     }
     const song = await Song.findOne({
-      title: { $regex: new RegExp(songName, "i") },
+      title: { $regex: songName, $options: "i" },
     });
     if (!song) {
       return res.status(404).json({ message: "Song not found" });
@@ -92,6 +103,9 @@ const removeFromPlaylist = asyncHandler(async (req, res) => {
   }
 });
 
+/**
+ * @ GET /api/playlists/all
+ */
 const getAllPlaylists = asyncHandler(async (req, res) => {
   try {
     const playlists = await Playlist.find({ userId: req.user.id });
