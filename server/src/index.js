@@ -6,6 +6,7 @@ const logger = require("./middleware/logger");
 const errorHandler = require("./middleware/errorHandler");
 const rootRoute = require("./routes/root");
 const authRoute = require("./routes/authRoute");
+const userRoute = require("./routes/userRoute");
 const songRoute = require("./routes/songRoute");
 const playlistRoute = require("./routes/playlistRoute");
 const dbConfig = require("./config/dbConfig");
@@ -24,6 +25,7 @@ app.use(
 );
 
 app.use("/", rootRoute);
+app.use("/api", userRoute);
 app.use("/api/auth", authRoute);
 app.use("/api/songs", songRoute);
 app.use("/api/playlists", playlistRoute);
