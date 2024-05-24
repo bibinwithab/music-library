@@ -8,6 +8,7 @@ const playlistController = require("../controllers/playlistController");
 router
   .post("/newPlaylist", authMiddleware, playlistController.createPlaylist)
   .post("/addSongs", authMiddleware, playlistController.addToPlaylist)
-  .delete("/removeSong", authMiddleware, playlistController.removeFromPlaylist);
+  .delete("/removeSong", authMiddleware, playlistController.removeFromPlaylist)
+  .get("/all", authMiddleware, playlistController.getAllPlaylists)
 
 module.exports = router;

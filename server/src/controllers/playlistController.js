@@ -1,12 +1,23 @@
 const asyncHandler = require("express-async-handler");
 const Playlist = require("../models/playlistModel");
+const Song = require("../models/songModel");
 
+/**
+ * @ POST /api/playlists/newPlaylist/
+ *
+ * @ sample body
+ * {
+ *  "playlistName" : "good vibes"
+ * }
+ */
 const createPlaylist = asyncHandler(async (req, res) => {
   try {
     const { playlistName } = req.body;
-    const existingPlaylist = await Playlist.findOne({playlistName: playlist})
-    if(existingPlaylist){
-      res.status(400).json({message: "A Playlist already exists with the same name"})
+    const existingPlaylist = await Playlist.findOne({ playlistName: playlist });
+    if (existingPlaylist) {
+      res
+        .status(400)
+        .json({ message: "A Playlist already exists with the same name" });
     }
     const playlist = new Playlist({
       userId: req.user.id,
@@ -21,20 +32,34 @@ const createPlaylist = asyncHandler(async (req, res) => {
   }
 });
 
+/**
+ * @ POST /api/playlists/addSongs
+ *
+ * @ sample body
+ * {
+ *  "playlistName": "good vibes",
+ *  "songName": "Stars"
+ * }
+ */
 const addToPlaylist = asyncHandler(async (req, res) => {
   try {
     const { playlistName, songName } = req.body;
-    const playlist = await Playlist.findOne({ playlistName: playlistName });
-    const song = await Song.findOne({ title: songName });
+
+    const playlist = await Playlist.findOne({
+      playlistName: { $regex: new RegExp(playlistName, "i") },
+    });
     if (!playlist) {
       return res.status(404).json({ message: "Playlist not found" });
     }
+    const song = await Song.findOne({
+      title: { $regex: new RegExp(songName, "i") },
+    });
     if (!song) {
       return res.status(404).json({ message: "Song not found" });
     }
     playlist.songs.push({ songId: song._id });
     await playlist.save();
-    res.json({ message: "Song added to playlist" });
+    res.status(200).json({ message: "Song added to playlist" });
   } catch (error) {
     res
       .status(500)
@@ -44,20 +69,41 @@ const addToPlaylist = asyncHandler(async (req, res) => {
 
 const removeFromPlaylist = asyncHandler(async (req, res) => {
   try {
-    const { playlistId, songId } = req.body;
+    const { playlistId, songName } = req.body;
     const playlist = await Playlist.findById(playlistId);
     if (!playlist) {
       return res.status(404).json({ message: "Playlist not found" });
     }
+    const song = await Song.findOne({
+      title: { $regex: new RegExp(songName, "i") },
+    });
+    if (!song) {
+      return res.status(404).json({ message: "Song not found" });
+    }
     playlist.songs = playlist.songs.filter(
-      (song) => song.songId.toString() !== songId
+      (songItem) => songItem.songId.toString() !== song._id.toString()
     );
     await playlist.save();
     res.json({ message: "Song removed from playlist" });
   } catch (error) {
     res
       .status(500)
-      .json({ message: "internal server error", error: `${error}` });
+      .json({ message: "Internal server error", error: `${error}` });
+  }
+});
+
+const getAllPlaylists = asyncHandler(async (req, res) => {
+  try {
+    const playlists = await Playlist.find({ userId: req.user.id });
+    if (playlists.length == 0) {
+      return res.status(404).json({ message: "No playlists found" });
+    }
+    res.json(playlists);
+  } catch (error) {
+    res.status(500).json({
+      message: "internal server error",
+      error: `${error}`,
+    });
   }
 });
 
@@ -65,4 +111,5 @@ module.exports = {
   createPlaylist,
   addToPlaylist,
   removeFromPlaylist,
+  getAllPlaylists,
 };
