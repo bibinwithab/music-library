@@ -1,6 +1,6 @@
-import  { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faTrash, faSort } from '@fortawesome/free-solid-svg-icons';
 import './Landing.css';
 
 const Library = () => {
@@ -21,9 +21,11 @@ const Library = () => {
         releaseDate: ''
     });
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isSortModalOpen, setIsSortModalOpen] = useState(false);
+    const [sortOption, setSortOption] = useState('releaseDate');
 
-    async function getData() {
-        const res = await fetch('http://localhost:8000/api/songs/all/');
+    async function getData(sort = '') {
+        const res = await fetch(`http://localhost:8000/api/songs?sort=${sort}`);
         const data = await res.json();
         console.log(data);
         setSongs(data);
@@ -48,6 +50,14 @@ const Library = () => {
 
     function closeModal() {
         setIsModalOpen(false);
+    }
+
+    function openSortModal() {
+        setIsSortModalOpen(true);
+    }
+
+    function closeSortModal() {
+        setIsSortModalOpen(false);
     }
 
     async function onAddSongSubmit(event) {
@@ -98,7 +108,7 @@ const Library = () => {
                 const updatedSong = await res.json();
                 setSongs(songs.map(song => (song._id === id ? updatedSong : song)));
                 setEditSong({ s: false, song: null });
-                getData()   
+                getData();
             } else {
                 console.error('Failed to update song');
             }
@@ -123,11 +133,27 @@ const Library = () => {
         getData();
     };
 
+    const handleSortChange = (event) => {
+        setSortOption(event.target.value);
+    };
+
+    const applySort = () => {
+        getData(sortOption);
+        closeSortModal();
+    };
+
     return (
         <>
-            <div className='w-screen bg-black'>
+            <div className='w-screen h-screen  bg-black'>
                 <h1 className='text-white py-6 px-10 text-4xl'>Library</h1>
-                <button className='text-white bg-custom-orange h-10 w-10 rounded-full absolute top-0 right-6 m-6 p-0 text-2xl flex justify-center items-center' onClick={openModal}><span className='p-0 m-0'>+</span></button>
+                <div className="absolute top-0 right-6 m-6 flex items-center space-x-4">
+                    <button className='text-white bg-custom-orange h-10 w-10 rounded-full p-0 text-2xl flex justify-center items-center' onClick={openModal}><span className='p-0 m-0'>+</span></button>
+                    <FontAwesomeIcon
+                        icon={faSort}
+                        className='text-white  cursor-pointer text-2xl'
+                        onClick={openSortModal}
+                    />
+                </div>
                 <table className='text-white mx-10 w-11/12'>
                     <thead>
                         <tr>
@@ -255,6 +281,82 @@ const Library = () => {
                                 />
                             </div>
                             <button type="submit" className='my-3 px-4 py-2 w-full rounded bg-orange-500'>Update</button>
+                        </form>
+                    </div>
+                </div>
+            )}
+            {isSortModalOpen && (
+                <div className="modal">
+                    <div className="modal-content">
+                        <span className="close" onClick={closeSortModal}>&times;</span>
+                        <h2>Sort Filters</h2>
+                        <form>
+                            <div className='form'>
+                                <label>
+                                    <input
+                                        type="radio"
+                                        name="sortOption"
+                                        value="title"
+                                        checked={sortOption === 'title'}
+                                        onChange={handleSortChange}
+                                        className='mr-2'
+                                    />
+                                    Title
+                                </label>
+                            </div>
+                            <div className='form'>
+                                <label>
+                                    <input
+                                        type="radio"    
+                                        name="sortOption"
+                                        value="artist"
+                                        checked={sortOption === 'artist'}
+                                        onChange={handleSortChange}
+                                        className='mr-2'
+                                    />
+                                    Artist
+                                </label>
+                            </div>
+                            <div className='form'>
+                                <label>
+                                    <input
+                                        type="radio"
+                                        name="sortOption"
+                                        value="album"
+                                        checked={sortOption === 'album'}
+                                        onChange={handleSortChange}
+                                        className='mr-2'
+                                    />
+                                    Album
+                                </label>
+                            </div>
+                            <div className='form'>
+                                <label>
+                                    <input
+                                        type="radio"
+                                        name="sortOption"
+                                        value="genre"
+                                        checked={sortOption === 'genre'}
+                                        onChange={handleSortChange}
+                                        className='mr-2'
+                                    />
+                                    Genre
+                                </label>
+                            </div>
+                            <div className='form'>
+                                <label>
+                                    <input
+                                        type="radio"
+                                        name="sortOption"
+                                        value="releaseDate"
+                                        checked={sortOption === 'releaseDate'}
+                                        onChange={handleSortChange}
+                                        className='mr-2'
+                                    />
+                                    Release Date
+                                </label>
+                            </div>
+                            <button type="button" className='my-3 px-4 py-2 w-full rounded bg-custom-orange' onClick={applySort}>Apply Sort</button>
                         </form>
                     </div>
                 </div>
