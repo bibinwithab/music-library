@@ -23,12 +23,29 @@ const Library = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSortModalOpen, setIsSortModalOpen] = useState(false);
   const [sortOption, setSortOption] = useState("releaseDate");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchFilter, setSearchFilter] = useState("title");
+  const [searchResults, setSearchResults] = useState([]);
 
   async function getData(sort = "") {
     const res = await fetch(`http://localhost:8000/api/songs?sort=${sort}`);
     const data = await res.json();
     console.log(data);
     setSongs(data);
+  }
+
+  async function handleSearch() {
+    const res = await fetch(
+      `http://localhost:8000/api/songs/search?${searchFilter}=${searchQuery}`
+    );
+    const data = await res.json();
+    console.log(data);
+    if (res.status === 200) {
+      setSearchResults(data);
+    } else {
+      alert("No songs found");
+      setSearchResults([]);
+    }
   }
 
   useEffect(() => {
@@ -144,7 +161,7 @@ const Library = () => {
 
   return (
     <>
-      <div className="w-screen h-screen font-light  bg-black">
+      <div className="w-screen h-screen font-light bg-black">
         <h1 className="text-custom-orange font-bebas py-6 px-10 text-4xl">
           Library
         </h1>
@@ -157,9 +174,34 @@ const Library = () => {
           </button>
           <FontAwesomeIcon
             icon={faSort}
-            className="text-white  cursor-pointer text-2xl"
+            className="text-white cursor-pointer text-2xl"
             onClick={openSortModal}
           />
+        </div>
+        <div className="flex mx-10 mb-6">
+          <select
+            className="p-2 mr-4 rounded bg-custom-orange text-white font-bebas"
+            value={searchFilter}
+            onChange={(e) => setSearchFilter(e.target.value)}
+          >
+            <option value="title">Title</option>
+            <option value="artist">Artist</option>
+            <option value="album">Album</option>
+            <option value="genre">Genre</option>
+          </select>
+          <input
+            type="text"
+            className="p-2 rounded bg-white text-black"
+            placeholder={`Search by ${searchFilter}`}
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <button
+            className="ml-4 px-4 py-2 rounded font-bebas bg-custom-orange text-white"
+            onClick={handleSearch}
+          >
+            Search
+          </button>
         </div>
         <table className="text-white font-gruppo font-semibold mx-10 w-11/12">
           <thead>
@@ -173,7 +215,7 @@ const Library = () => {
             </tr>
           </thead>
           <tbody>
-            {songs.map((song) => (
+            {(searchResults.length > 0 ? searchResults : songs).map((song) => (
               <tr key={song._id}>
                 <td>{song.title}</td>
                 <td>{song.artist}</td>

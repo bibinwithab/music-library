@@ -12,7 +12,7 @@ const playlistRoute = require("./routes/playlistRoute");
 const dbConfig = require("./config/dbConfig");
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8000;
 
 app.use(express.json());
 app.use(cors());
