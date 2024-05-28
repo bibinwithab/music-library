@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import img1 from '../assets/img/headphone.jpeg';
 import './Landing.css';
 import { useNavigate } from 'react-router-dom';
@@ -40,7 +40,7 @@ const Landing = () => {
 
     async function onSubmit(event) {
         event.preventDefault();
-        const response = await fetch('http://localhost:3000/api/auth/register', {
+        const response = await fetch('http://localhost:8000/api/auth/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -60,7 +60,7 @@ const Landing = () => {
     async function onLoginSubmit(event) {
         console.log();
         event.preventDefault();
-        const response = await fetch('http://localhost:3000/api/auth/login', {
+        const response = await fetch('http://localhost:8000/api/auth/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

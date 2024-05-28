@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import './Landing.css';
@@ -23,7 +23,7 @@ const Library = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     async function getData() {
-        const res = await fetch('http://localhost:3000/api/songs/all/');
+        const res = await fetch('http://localhost:8000/api/songs/all/');
         const data = await res.json();
         console.log(data);
         setSongs(data);
@@ -53,7 +53,7 @@ const Library = () => {
     async function onAddSongSubmit(event) {
         console.log();
         event.preventDefault();
-        const response = await fetch('http://localhost:3000/api/songs/addSong', {
+        const response = await fetch('http://localhost:8000/api/songs/addSong', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -87,7 +87,7 @@ const Library = () => {
 
     const handleUpdate = async (id) => {
         try {
-            const res = await fetch(`http://localhost:3000/api/songs/update/${id}`, {
+            const res = await fetch(`http://localhost:8000/api/songs/update/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
@@ -109,7 +109,7 @@ const Library = () => {
 
     const handleDelete = async (id) => {
         try {
-            const res = await fetch(`http://localhost:3000/api/songs/delete/${id}`, {
+            const res = await fetch(`http://localhost:8000/api/songs/delete/${id}`, {
                 method: 'DELETE'
             });
             if (res.status === 201) {
