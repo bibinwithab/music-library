@@ -7,8 +7,7 @@ import Library from './components/library'
 const App = () => {
   return (
     <Routes>
-      <Route path='/' element={<p>Hello</p>}></Route>
-      <Route path='/login' element={<Landing />}></Route>
+      <Route path='/' element={<Landing />}></Route>
       <Route path='/home' element={<Home />}></Route>
       <Route path='/library' element={<Library />}></Route>
     </Routes>

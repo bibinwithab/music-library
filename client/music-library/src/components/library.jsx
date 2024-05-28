@@ -125,10 +125,10 @@ const Library = () => {
 
     return (
         <>
-            <div className='w-screen h-screen bg-black'>
+            <div className='w-screen bg-black'>
                 <h1 className='text-white py-6 px-10 text-4xl'>Library</h1>
-                <button className='text-white bg-orange-500 h-10 w-10 rounded-full absolute top-0 right-0 m-6 p-0 text-2xl flex justify-center items-center' onClick={openModal}><span>+</span></button>
-                <table className='text-white mx-10'>
+                <button className='text-white bg-custom-orange h-10 w-10 rounded-full absolute top-0 right-6 m-6 p-0 text-2xl flex justify-center items-center' onClick={openModal}><span className='p-0 m-0'>+</span></button>
+                <table className='text-white mx-10 w-11/12'>
                     <thead>
                         <tr>
                             <th>Title</th>

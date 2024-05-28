@@ -51,7 +51,7 @@ const Landing = () => {
         if(response.status===400)
             alert('Username already taken')
         if (response.status === 200) {
-            alert('Registration successful');
+            // alert('Registration successful');
             // navigate('/home');
             openModal()
         }
@@ -68,7 +68,7 @@ const Landing = () => {
             body: JSON.stringify(loginData)
         });
         if (response.status === 200) {
-            alert('Login successful');
+            // alert('Login successful');
             setIsModalOpen(false);
             const data = await response.json();
             localStorage.setItem('id', data.id)
@@ -92,7 +92,7 @@ const Landing = () => {
 
     return (
         <>
-            <div className='w-screen bg-black flex flex-col justify-center items-center gap-12'>
+            <div className='w-screen bg-black flex flex-col justify-center items-center gap-12 '>
                 <section className='flex justify-evenly items-center w-screen'>
                     <img src={img1} className='py-8 log-img' alt="headphone image" />
                     <div className='flex flex-col '>
@@ -108,7 +108,8 @@ const Landing = () => {
                         <p className='text-white py-8'>about</p>
                     </div>
                 </section>
-                <section className='text-white'>
+                <section className='text-white pb-28
+                '>
                     <h2 className='text-4xl py-3'>Register</h2>
                     <form onSubmit={onSubmit} className='flex flex-col'>
                         <div className='form'>
@@ -126,9 +127,9 @@ const Landing = () => {
                                 {showPassword ? 'Hide' : 'Show'}
                             </span>
                         </div>
-                        <button className='my-3 px-4 py-2 w-2/6 rounded bg-orange-500'>Register</button>
+                        <button className='my-3 px-4 py-2 w-2/6 rounded bg-custom-orange'>Register</button>
                     </form>
-                    <p>Already a user? <a href="#" className='text-orange-500' onClick={openModal}>Login</a></p>
+                    <p>Already a user? <a href="#" className='text-custom-orange' onClick={openModal}>Login</a></p>
                 </section>
             </div>
 
@@ -146,10 +147,15 @@ const Landing = () => {
                                 <label htmlFor="loginPassword">Password</label>
                                 <input onChange={onLoginInputChange} type="password" id="loginPassword" name="password" />
                             </div>
-                            <button className='my-3 px-4 py-2 w-full rounded bg-orange-500'>Login</button>
+                            <button className='my-3 px-4 py-2 w-full rounded bg-orange-600'>Login</button>
                         </form>
                     </div>
+                    <br />
+                    <br />
+                    <br />
+                    <br />
                 </div>
+                
             )}
         </>
     );
