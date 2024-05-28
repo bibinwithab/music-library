@@ -12,11 +12,11 @@ const playlistRoute = require("./routes/playlistRoute");
 const dbConfig = require("./config/dbConfig");
 
 const app = express();
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3000;
 
-app.use(logger);
 app.use(express.json());
 app.use(cors());
+app.use(logger);
 app.use(cookieParser());
 app.use(
   express.urlencoded({

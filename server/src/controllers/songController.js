@@ -13,10 +13,11 @@ const Song = require("../models/songModel");
  */
 const addSong = asyncHandler(async (req, res) => {
   try {
-    const { title, artist, genre, releaseDate } = req.body;
+    const { title, artist, album, genre, releaseDate } = req.body;
     const song = new Song({
       title,
       artist,
+      album,
       genre,
       releaseDate,
     });
@@ -55,8 +56,8 @@ const deleteSong = asyncHandler(async (req, res) => {
 const updateSong = asyncHandler(async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, artist, genre, releaseDate } = req.body;
-    await Song.findByIdAndUpdate(id, { title, artist, genre, releaseDate });
+    const { title, artist, genre, album, releaseDate } = req.body;
+    await Song.findByIdAndUpdate(id, { title, artist, genre, album, releaseDate });
     res.status(201).json({ message: "Song updated" });
   } catch (error) {
     res

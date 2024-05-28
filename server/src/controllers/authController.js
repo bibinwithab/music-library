@@ -16,7 +16,7 @@ const User = require("../models/userModel");
 const registerUser = asyncHandler(async (req, res) => {
   try {
     const { username, password, email } = req.body;
-
+    console.log(req.body);
     const hashedPassword = await bcrypt.hash(password, 10);
     const existingUser = await User.findOne({ username: username });
     if (existingUser) {
@@ -31,7 +31,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
     newUser.save();
 
-    res.json({
+    res.status(200).json({
       message: "New user Created",
     });
   } catch (error) {
@@ -54,7 +54,7 @@ const registerUser = asyncHandler(async (req, res) => {
 const loginUser = asyncHandler(async (req, res) => {
   try {
     const { username, password } = req.body;
-
+console.log(req.body);
     const user = await User.findOne({ username });
     if (!user) {
       return res.status(400).json({ message: "Invalid username or password" });
