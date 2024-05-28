@@ -32,7 +32,7 @@ app.use("/api/playlists", playlistRoute);
 
 app.use(errorHandler);
 
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0',() => {
   console.log(`Server up on http://localhost:${PORT}/`);
   dbConfig();
 });
