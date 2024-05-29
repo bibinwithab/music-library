@@ -166,18 +166,18 @@ const Library = () => {
           Library
         </h1>
         <div className="absolute top-0 right-6 m-6 flex items-center space-x-4">
-        <button
-  className="text-white bg-custom-orange hover:bg-orange-600 h-10 w-10 rounded-full text-2xl flex justify-center items-center"
-  onClick={openModal}
->
-  <span className="flex items-center justify-center h-full w-full leading-none">+</span>
-</button>
-
-
+          <button
+            className="text-white bg-custom-orange hover:bg-orange-600 h-10 w-10 rounded-full text-2xl flex justify-center items-center"
+            onClick={openModal}
+          >
+            <span className="flex items-center justify-center h-full w-full leading-none">
+              +
+            </span>
+          </button>
 
           <FontAwesomeIcon
             icon={faSort}
-            className="text-white cursor-pointer text-2xl"
+            className="text-white hover:text-custom-orange cursor-pointer text-2xl"
             onClick={openSortModal}
           />
         </div>
@@ -230,11 +230,13 @@ const Library = () => {
                     icon={faEdit}
                     onClick={() => handleEdit(song)}
                     style={{ cursor: "pointer", marginRight: "10px" }}
+                    className="hover:text-custom-orange"
                   />
                   <FontAwesomeIcon
                     icon={faTrash}
                     onClick={() => handleDelete(song._id)}
                     style={{ cursor: "pointer" }}
+                    className="hover:text-custom-orange"
                   />
                 </td>
               </tr>
