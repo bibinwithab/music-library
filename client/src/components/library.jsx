@@ -88,10 +88,10 @@ const Library = () => {
       body: JSON.stringify(songData),
     });
     if (response.status === 201) {
-      alert("Song Added");
+      // alert("Song Added");
       setIsModalOpen(false);
     } else {
-      alert("Oops");
+      alert("fill all values");
     }
     getData();
   }
@@ -166,12 +166,15 @@ const Library = () => {
           Library
         </h1>
         <div className="absolute top-0 right-6 m-6 flex items-center space-x-4">
-          <button
-            className="text-white bg-custom-orange h-10 w-10 rounded-full p-0 text-2xl flex justify-center items-center"
-            onClick={openModal}
-          >
-            <span className="p-0 m-0">+</span>
-          </button>
+        <button
+  className="text-white bg-custom-orange hover:bg-orange-600 h-10 w-10 rounded-full text-2xl flex justify-center items-center"
+  onClick={openModal}
+>
+  <span className="flex items-center justify-center h-full w-full leading-none">+</span>
+</button>
+
+
+
           <FontAwesomeIcon
             icon={faSort}
             className="text-white cursor-pointer text-2xl"
@@ -197,7 +200,7 @@ const Library = () => {
             onChange={(e) => setSearchQuery(e.target.value)}
           />
           <button
-            className="ml-4 px-4 py-2 rounded font-bebas bg-custom-orange text-white"
+            className="ml-4 px-4 py-2 rounded font-bebas bg-custom-orange hover:bg-orange-600 text-white"
             onClick={handleSearch}
           >
             Search
@@ -293,7 +296,7 @@ const Library = () => {
                   value={songData.releaseDate}
                 />
               </div>
-              <button className="my-3 px-4 py-2 w-full rounded bg-orange-500">
+              <button className="my-3 px-4 py-2 w-full rounded text-white bg-custom-orange hover:bg-orange-600">
                 Add Song
               </button>
             </form>
@@ -368,7 +371,7 @@ const Library = () => {
               </div>
               <button
                 type="submit"
-                className="my-3 px-4 py-2 w-full rounded bg-orange-500"
+                className="my-3 px-4 py-2 w-full rounded text-white bg-custom-orange hover:bg-orange-600"
               >
                 Update
               </button>
@@ -451,7 +454,7 @@ const Library = () => {
               </div>
               <button
                 type="button"
-                className="my-3 px-4 py-2 w-full rounded bg-custom-orange"
+                className="my-3 px-4 py-2 w-full rounded text-white bg-custom-orange hover:bg-orange-600"
                 onClick={applySort}
               >
                 Apply Sort

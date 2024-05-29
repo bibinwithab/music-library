@@ -5,6 +5,9 @@ import { useNavigate } from "react-router-dom";
 
 const Landing = () => {
   const navigate = useNavigate();
+  const handleClick = () => {
+    navigate('/library');
+  };
 
   const [formData, setFormData] = useState({
     username: "",
@@ -88,7 +91,7 @@ const Landing = () => {
   return (
     <>
       <div className="w-screen bg-black flex flex-col justify-center items-center gap-12 font-bebas">
-        <section className="flex justify-evenly  items-center w-screen h-screen">
+        <section className="flex justify-evenly items-center h-screen gap-20">
           <img src={img1} className="py-8 log-img" alt="headphone image" />
           <div className="flex flex-col">
             <h1 className="text-white text-7xl py-8">
@@ -120,7 +123,7 @@ const Landing = () => {
               </li>
               <li>
                 <h2 className="text-white text-2xl">
-                  Get started <span className="text-custom-orange">today!</span>
+                  Get started <span className="text-custom-orange cursor-pointer underline underline-offset-4 hover:text-white" onClick={handleClick} >today!</span>
                 </h2>
               </li>
             </ul>
@@ -165,13 +168,13 @@ const Landing = () => {
                 {showPassword ? "Hide" : "Show"}
               </span>
             </div>
-            <button className="my-3 px-4 py-2 w-2/6 font-gruppo font-bold rounded bg-custom-orange">
+            <button className="my-3 px-4 py-2 w-2/6 font-gruppo font-bold rounded bg-custom-orange hover:bg-orange-600">
               Register
             </button>
           </form>
           <p>
             Already a user?{" "}
-            <a href="#" className="text-custom-orange  " onClick={openModal}>
+            <a href="#" className="text-custom-orange hover:text-white " onClick={openModal}>
               Login
             </a>
           </p>
@@ -204,7 +207,7 @@ const Landing = () => {
                   name="password"
                 />
               </div>
-              <button className="my-3 px-4 py-2 w-full rounded bg-orange-600">
+              <button className="my-3 px-4 py-2 w-full rounded bg-custom-orange hover:bg-orange-600 text-white">
                 Login
               </button>
             </form>
