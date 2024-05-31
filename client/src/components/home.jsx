@@ -1,75 +1,162 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import './Landing.css'
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
+  const navigate = useNavigate();
   const [playlists, setPlaylists] = useState([]);
-  const [showModal, setShowModal] = useState(false);
-  const [newPlaylistName, setNewPlaylistName] = useState('');
+  const [newPlaylistName, setNewPlaylistName] = useState("");
+  const [newSongName, setNewSongName] = useState("");
+  const [selectedPlaylist, setSelectedPlaylist] = useState("");
 
   useEffect(() => {
-    // Fetch user's playlists
-    axios.get('/api/playlists/all')
-      .then(response => {
-        setPlaylists(response.data);
-      })
-      .catch(error => {
-        console.error('Error fetching playlists:', error);
-      });
+    fetchPlaylists();
   }, []);
 
-  const handleAddPlaylist = () => {
-    setShowModal(true);
+  const fetchPlaylists = async () => {
+    const id = localStorage.getItem("id");
+    // localStorage.getItem("token");
+    try {
+        const response = await fetch("http://localhost:8000/api/playlists/all", {
+            credentials: "include",  // This is important to include cookies with the request
+        });
+        if (!response.ok) {
+            throw new Error("Failed to fetch playlists");
+        }
+        const data = await response.json();
+        setPlaylists(data);
+    } catch (error) {
+        console.error("Error fetching playlists:", error.message);
+    }
+};
+
+
+  const handleAddPlaylist = async (event) => {
+    event.preventDefault();
+    const token = localStorage.getItem("token");
+    const response = await fetch(
+      "http://localhost:8000/api/playlists/newPlaylist",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ playlistName: newPlaylistName }),
+      }
+    );
+    if (response.status === 201) {
+      fetchPlaylists();
+      setNewPlaylistName("");
+    } else {
+      const data = await response.json();
+      console.error(data.message);
+    }
   };
 
-  const handleCloseModal = () => {
-    setShowModal(false);
+  const handleAddSong = async (event) => {
+    event.preventDefault();
+    const token = localStorage.getItem("token");
+    const response = await fetch("http://localhost:8000/api/playlists/addSongs", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        playlistName: selectedPlaylist,
+        songName: newSongName,
+      }),
+    });
+    if (response.status === 200) {
+      fetchPlaylists();
+      setNewSongName("");
+    } else {
+      const data = await response.json();
+      console.error(data.message);
+    }
   };
 
-  const handleCreatePlaylist = () => {
-    // Create new playlist
-    axios.post('/api/playlists/newPlaylist', { playlistName: newPlaylistName })
-      .then(response => {
-        console.log('Playlist created:', response.data.message);
-        // Fetch updated playlists
-        axios.get('/api/playlists/all')
-          .then(response => {
-            setPlaylists(response.data);
-            setNewPlaylistName('');
-            setShowModal(false);
-          })
-          .catch(error => {
-            console.error('Error fetching playlists:', error);
-          });
-      })
-      .catch(error => {
-        console.error('Error creating playlist:', error.response.data.message);
-      });
+  const handleRemoveSong = async (playlistName, songName) => {
+    const token = localStorage.getItem("token");
+    const response = await fetch("http://localhost:8000/api/playlists/removeSong", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        playlistName,
+        songName,
+      }),
+    });
+    if (response.status === 200) {
+      fetchPlaylists();
+    } else {
+      const data = await response.json();
+      console.error(data.message);
+    }
   };
 
   return (
     <div>
       <h1>My Playlists</h1>
-      <button onClick={handleAddPlaylist}>Create Playlist</button>
-  
-      {Array.isArray(playlists) && playlists.map(playlist => (
+      <form onSubmit={handleAddPlaylist}>
+        <input
+          type="text"
+          value={newPlaylistName}
+          onChange={(e) => setNewPlaylistName(e.target.value)}
+          placeholder="New Playlist Name"
+        />
+        <button type="submit">Add Playlist</button>
+      </form>
+      <div>
+        <form onSubmit={handleAddSong}>
+          <select
+            value={selectedPlaylist}
+            onChange={(e) => setSelectedPlaylist(e.target.value)}
+          >
+            <option value="">Select Playlist</option>
+            {playlists.map((playlist) => (
+              <option key={playlist._id} value={playlist.playlistName}>
+                {playlist.playlistName}
+              </option>
+            ))}
+          </select>
+          <input
+            type="text"
+            value={newSongName}
+            onChange={(e) => setNewSongName(e.target.value)}
+            placeholder="Song Name"
+          />
+          <button type="submit">Add Song</button>
+        </form>
+      </div>
+      {playlists.map((playlist) => (
         <div key={playlist._id}>
           <h2>{playlist.playlistName}</h2>
           <table>
             <thead>
               <tr>
-                <th>Title</th>
+                <th>Song Title</th>
                 <th>Artist</th>
-                <th>Actions</th>
+                <th>Album</th>
+                <th>Genre</th>
+                <th>Release Date</th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody>
-              {playlist.songs.map(song => (
+              {playlist.songs.map((song) => (
                 <tr key={song._id}>
-                  <td>{song.title}</td>
-                  <td>{song.artist}</td>
+                  <td>{song.songId.title}</td>
+                  <td>{song.songId.artist}</td>
+                  <td>{song.songId.album}</td>
+                  <td>{song.songId.genre}</td>
+                  <td>{new Date(song.songId.releaseDate).toLocaleDateString()}</td>
                   <td>
-                    <button>Remove</button>
+                    <button onClick={() => handleRemoveSong(playlist.playlistName, song.songId.title)}>
+                      Remove
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -77,22 +164,6 @@ const Home = () => {
           </table>
         </div>
       ))}
-  
-      {showModal && (
-        <div className="modal">
-          <div className="modal-content">
-            <span className="close" onClick={handleCloseModal}>&times;</span>
-            <h2>Create Playlist</h2>
-            <input
-              type="text"
-              placeholder="Enter playlist name"
-              value={newPlaylistName}
-              onChange={(e) => setNewPlaylistName(e.target.value)}
-            />
-            <button onClick={handleCreatePlaylist}>Create</button>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
