@@ -74,7 +74,7 @@ const Landing = () => {
       localStorage.setItem("username", data.user.username);
       localStorage.setItem("token", data.token);
       localStorage.setItem("email", data.user.email);
-      navigate("/home");
+      navigate("/library");
     }
   }
 
