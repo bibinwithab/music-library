@@ -69,9 +69,11 @@ const Landing = () => {
       // alert('Login successful');
       setIsModalOpen(false);
       const data = await response.json();
-      localStorage.setItem("id", data.id);
-      localStorage.setItem("username", data.username);
+      // console.log(data);
+      localStorage.setItem("id", data.user.id);
+      localStorage.setItem("username", data.user.username);
       localStorage.setItem("token", data.token);
+      localStorage.setItem("email", data.user.email);
       navigate("/library");
     }
   }

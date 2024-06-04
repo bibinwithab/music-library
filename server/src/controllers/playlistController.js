@@ -110,6 +110,7 @@ const removeFromPlaylist = asyncHandler(async (req, res) => {
  */
 const getAllPlaylists = asyncHandler(async (req, res) => {
   try {
+    // console.log('from all');
     const playlists = await Playlist.find({ userId: req.user.id });
     if (playlists.length == 0) {
       return res.status(404).json({ message: "No playlists found" });
