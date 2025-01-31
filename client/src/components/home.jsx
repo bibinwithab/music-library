@@ -7,6 +7,7 @@ const Home = () => {
   const [newPlaylistName, setNewPlaylistName] = useState("");
   const [newSongName, setNewSongName] = useState("");
   const [selectedPlaylist, setSelectedPlaylist] = useState("");
+  const url = "https://music-library-server.onrender.com";
 
   useEffect(() => {
     fetchPlaylists();
@@ -16,7 +17,7 @@ const Home = () => {
     const id = localStorage.getItem("id");
     // localStorage.getItem("token");
     try {
-        const response = await fetch("http://localhost:8000/api/playlists/all", {
+        const response = await fetch(url+"/api/playlists/all", {
             credentials: "include",  // This is important to include cookies with the request
         });
         if (!response.ok) {
@@ -34,7 +35,7 @@ const Home = () => {
     event.preventDefault();
     const token = localStorage.getItem("token");
     const response = await fetch(
-      "http://localhost:8000/api/playlists/newPlaylist",
+      url+"/api/playlists/newPlaylist",
       {
         method: "POST",
         headers: {
@@ -56,7 +57,7 @@ const Home = () => {
   const handleAddSong = async (event) => {
     event.preventDefault();
     const token = localStorage.getItem("token");
-    const response = await fetch("http://localhost:8000/api/playlists/addSongs", {
+    const response = await fetch(url+"/api/playlists/addSongs", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -78,7 +79,7 @@ const Home = () => {
 
   const handleRemoveSong = async (playlistName, songName) => {
     const token = localStorage.getItem("token");
-    const response = await fetch("http://localhost:8000/api/playlists/removeSong", {
+    const response = await fetch(url+"/api/playlists/removeSong", {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",

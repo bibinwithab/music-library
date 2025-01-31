@@ -22,6 +22,7 @@ const Landing = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const url = "https://music-library-server.onrender.com";
 
   function onInputChange(event) {
     setFormData((prev) => ({
@@ -39,7 +40,7 @@ const Landing = () => {
 
   async function onSubmit(event) {
     event.preventDefault();
-    const response = await fetch("http://localhost:8000/api/auth/register", {
+    const response = await fetch(url+"/api/auth/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -58,7 +59,7 @@ const Landing = () => {
   async function onLoginSubmit(event) {
     console.log();
     event.preventDefault();
-    const response = await fetch("http://localhost:8000/api/auth/login", {
+    const response = await fetch(url+"/api/auth/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

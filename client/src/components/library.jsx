@@ -26,9 +26,10 @@ const Library = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchFilter, setSearchFilter] = useState("title");
   const [searchResults, setSearchResults] = useState([]);
+  const url = "https://music-library-server.onrender.com"
 
   async function getData(sort = "") {
-    const res = await fetch(`http://localhost:8000/api/songs?sort=${sort}`);
+    const res = await fetch(`${url}/api/songs?sort=${sort}`);
     const data = await res.json();
     console.log(data);
     setSongs(data);
@@ -36,7 +37,7 @@ const Library = () => {
 
   async function handleSearch() {
     const res = await fetch(
-      `http://localhost:8000/api/songs/search?${searchFilter}=${searchQuery}`
+      `${url}/api/songs/search?${searchFilter}=${searchQuery}`
     );
     const data = await res.json();
     console.log(data);
@@ -80,7 +81,7 @@ const Library = () => {
   async function onAddSongSubmit(event) {
     console.log();
     event.preventDefault();
-    const response = await fetch("http://localhost:8000/api/songs/addSong", {
+    const response = await fetch("${url}/api/songs/addSong", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -114,7 +115,7 @@ const Library = () => {
 
   const handleUpdate = async (id) => {
     try {
-      const res = await fetch(`http://localhost:8000/api/songs/update/${id}`, {
+      const res = await fetch(`${url}/api/songs/update/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -136,7 +137,7 @@ const Library = () => {
 
   const handleDelete = async (id) => {
     try {
-      const res = await fetch(`http://localhost:8000/api/songs/delete/${id}`, {
+      const res = await fetch(`${url}/api/songs/delete/${id}`, {
         method: "DELETE",
       });
       if (res.status === 201) {
