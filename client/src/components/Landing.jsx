@@ -40,7 +40,7 @@ const Landing = () => {
 
   async function onSubmit(event) {
     event.preventDefault();
-    const response = await fetch(url+"/api/auth/register", {
+    const response = await fetch(`${url}/api/auth/register`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -59,7 +59,7 @@ const Landing = () => {
   async function onLoginSubmit(event) {
     console.log();
     event.preventDefault();
-    const response = await fetch(url+"/api/auth/login", {
+    const response = await fetch(`${url}/api/auth/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

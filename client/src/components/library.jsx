@@ -81,7 +81,7 @@ const Library = () => {
   async function onAddSongSubmit(event) {
     console.log();
     event.preventDefault();
-    const response = await fetch("${url}/api/songs/addSong", {
+    const response = await fetch(`${url}/api/songs/addSong`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
