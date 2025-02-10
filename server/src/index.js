@@ -17,7 +17,7 @@ const PORT = process.env.PORT || 8000;
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-  origin: 'https://music-lib-client.vercel.app/',
+  origin: 'https://music-lib-client.vercel.app',
   credentials: true
 }));
 app.use(
